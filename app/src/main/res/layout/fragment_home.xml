@@ -11,23 +11,31 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/buttonViewSensors"
+            android:id="@+id/buttonViewFavSensors"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:text="View Sensors"
+            android:layout_marginTop="60dp"
+            android:text="View Favorite Sensors"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewHomeImage" />
+
+        <Button
+            android:id="@+id/buttonViewAllSensors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View All Sensors"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.494"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewHomeImage"
-            app:layout_constraintVertical_bias="0.013" />
+            app:layout_constraintTop_toBottomOf="@+id/buttonViewFavSensors"
+            app:layout_constraintVertical_bias="0.275" />
 
         <ImageView
             android:id="@+id/imageViewHomeImage"
             android:layout_width="148dp"
             android:layout_height="140dp"
-            android:layout_marginTop="84dp"
+            android:layout_marginTop="50dp"
             android:src="@android:drawable/sym_def_app_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -38,11 +46,11 @@
             android:id="@+id/textViewHomeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="68dp"
+            android:layout_marginTop="50dp"
             android:text="Set up your smart home!"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewHomeHeader" />
 
@@ -51,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
-            android:text="IoT Dashboard"
+            android:text="@string/iot_dashboard"
             android:textSize="48sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
