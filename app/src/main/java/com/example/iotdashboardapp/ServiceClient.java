@@ -14,6 +14,10 @@ public class ServiceClient {
         this.context = ctx;
     }
 
+    public static synchronized ServiceClient sharedServiceClient() {
+        return sharedServiceClient(null);
+    }
+
     public static synchronized ServiceClient sharedServiceClient(Context ctx) {
         if (serviceClient == null) {
             serviceClient = new ServiceClient(ctx);

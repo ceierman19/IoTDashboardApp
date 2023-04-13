@@ -55,8 +55,6 @@ public class AllSensorsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //ServiceClient.sharedServiceClient(getApplicationContext());
-        //ServiceClient.sharedServiceClient(null);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -87,9 +85,8 @@ public class AllSensorsFragment extends Fragment {
                         //TODO: handle error
                     }
                 });
-                //ServiceClient client = ServiceClient.sharedServiceClient(getApplicationContext());
-                //ServiceClient client = ServiceClient.sharedServiceClient(null);
-                //client.addRequest(request);
+                ServiceClient client = ServiceClient.sharedServiceClient();
+                client.addRequest(request);
             }
         });
 
