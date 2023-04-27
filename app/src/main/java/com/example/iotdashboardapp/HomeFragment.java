@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View allSensorsButton) {
                 // TODO: Change action to allSensorsFragment
-                Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_orderFragment);
+                Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_sensorFragment);
             }
         });
 

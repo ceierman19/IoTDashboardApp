@@ -8,12 +8,12 @@ import com.example.iotdashboardapp.databinding.FragmentItem2Binding;
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Order}.
+ * {@link RecyclerView.Adapter} that can display a {@link Sensor}.
  */
-public class MyOrderRecyclerViewAdapter extends RecyclerView.Adapter<MyOrderRecyclerViewAdapter.ViewHolder> {
-    private final List<Order> mValues;
+public class MySensorRecyclerViewAdapter extends RecyclerView.Adapter<MySensorRecyclerViewAdapter.ViewHolder> {
+    private final List<Sensor> mValues;
 
-    public MyOrderRecyclerViewAdapter(List<Order> items) {
+    public MySensorRecyclerViewAdapter(List<Sensor> items) {
         mValues = items;
     }
 
@@ -25,9 +25,8 @@ public class MyOrderRecyclerViewAdapter extends RecyclerView.Adapter<MyOrderRecy
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(String.format("%d", mValues.get(position).orderId));
-        //holder.mIdView.setText(mValues.get(position).emailAddress);
-        holder.mContentView.setText(mValues.get(position).itemName);
+        holder.mIdView.setText(String.format("%d", mValues.get(position).sensorId));
+        holder.mContentView.setText(String.format("%s", mValues.get(position).sensorName));
     }
 
     @Override
@@ -38,7 +37,7 @@ public class MyOrderRecyclerViewAdapter extends RecyclerView.Adapter<MyOrderRecy
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView mIdView;
         public final TextView mContentView;
-        public Order mItem;
+        public Sensor mItem;
 
         public ViewHolder(FragmentItem2Binding binding) {
             super(binding.getRoot());

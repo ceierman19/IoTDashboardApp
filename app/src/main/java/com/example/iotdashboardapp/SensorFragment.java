@@ -23,16 +23,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 // A fragment representing a list of Items
-public class OrderFragment extends Fragment {
+public class SensorFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
 
     // Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon screen orientation changes)
-    public OrderFragment() {
+    public SensorFragment() {
     }
 
-    public static OrderFragment newInstance(int columnCount) {
-        OrderFragment fragment = new OrderFragment();
+    public static SensorFragment newInstance(int columnCount) {
+        SensorFragment fragment = new SensorFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -55,18 +55,18 @@ public class OrderFragment extends Fragment {
         ServiceClient client = ServiceClient.sharedServiceClient();
         AuthRequest.username = "ceierman19";
         AuthRequest.password = "changeme";
-        List<Order> orders = new ArrayList<>();
-        MyOrderRecyclerViewAdapter adapter = new MyOrderRecyclerViewAdapter(orders);
+        List<Sensor> sensors = new ArrayList<>();
+        MySensorRecyclerViewAdapter adapter = new MySensorRecyclerViewAdapter(sensors);
 
-        AuthRequest request = new AuthRequest(Request.Method.GET, "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/orders", null, new Response.Listener<JSONObject>() {
+        AuthRequest request = new AuthRequest(Request.Method.GET, "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/sensors", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Type orderList = new TypeToken<ArrayList<Order>>() {}.getType();
+                Type sensorList = new TypeToken<ArrayList<Sensor>>() {}.getType();
                 Gson gson = new Gson();
                 try {
-                    List<Order> updatedOrders = gson.fromJson(response.get("data").toString(), orderList);
-                    orders.clear();
-                    orders.addAll(updatedOrders);
+                    List<Sensor> updatedSensors = gson.fromJson(response.get("data").toString(), sensorList);
+                    sensors.clear();
+                    sensors.addAll(updatedSensors);
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
