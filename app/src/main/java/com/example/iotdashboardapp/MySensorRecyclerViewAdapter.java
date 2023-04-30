@@ -25,8 +25,8 @@ public class MySensorRecyclerViewAdapter extends RecyclerView.Adapter<MySensorRe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(String.format("%d", mValues.get(position).sensorId));
-        holder.mContentView.setText(String.format("%s", mValues.get(position).sensorName));
+        holder.mIdView.setText(String.format("%d", mValues.get(position).sensor_id));
+        holder.mContentView.setText(String.format("%s", mValues.get(position).sensor_name));
     }
 
     @Override
