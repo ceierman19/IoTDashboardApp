@@ -105,8 +105,8 @@ public class FavSensorFragment extends Fragment implements MyFavSensorsRecyclerV
     @Override
     public void didSelect(int index) {
         FavSensor s = favSensors.get(index);
-        Bundle sensorBundle = new Bundle();
-        sensorBundle.putString("readingType", s.reading_type);
-        Navigation.findNavController(view).navigate(R.id.action_sensorFragment_to_sensorReadingsFragment, sensorBundle);
+//        Bundle sensorBundle = new Bundle();
+//        sensorBundle.putString("readingType", s.reading_type);
+//        Navigation.findNavController(view).navigate(R.id.action_sensorFragment_to_sensorReadingsFragment, sensorBundle);
     }
 }
