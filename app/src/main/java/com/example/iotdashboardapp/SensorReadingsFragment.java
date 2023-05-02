@@ -65,8 +65,26 @@ public class SensorReadingsFragment extends Fragment {
         sensorReadings = new ArrayList<>();
         MySensorReadingsRecyclerViewAdapter adapter = new MySensorReadingsRecyclerViewAdapter(sensorReadings);
 
-        //TODO Change URL to sensorReadings one
-        JsonObjectRequest request = new AuthRequest(Request.Method.GET, "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/sensors", null, new Response.Listener<JSONObject>() {
+        Bundle sensorBundle = getArguments();
+        String readingType = sensorBundle.getString("readingType");
+        int id = -1;
+        if (readingType.equals("temp")) {
+            id = 0;
+        }
+        else if (readingType.equals("humd")) {
+            id = 1;
+        }
+        else if (readingType.equals("soiltemp")) {
+            id = 2;
+        }
+        else {
+            id = 3;
+        }
+        id = sensorBundle.getInt("readingTypeNum");
+        id -= 1;
+        //String url = "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/sensorReadings/" + id;
+        String url = "https://mopsdev.bw.edu/~jgersey20/330/www/rest.php/sensorReadings/" + id;
+        JsonObjectRequest request = new AuthRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Type sensorReadingsList = new TypeToken<ArrayList<SensorReadings>>() {}.getType();

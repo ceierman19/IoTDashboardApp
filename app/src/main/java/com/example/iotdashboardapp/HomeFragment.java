@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View favSensorsButton) {
                 // TODO: favSensorsFragment should become a RecyclerView?
-                Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_favSensorsFragment);
+                Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_favSensorFragment);
             }
         });
 

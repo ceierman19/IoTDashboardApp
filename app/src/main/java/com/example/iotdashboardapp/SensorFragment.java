@@ -3,6 +3,7 @@ package com.example.iotdashboardapp;
 import android.content.Context;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.iotdashboardapp.model.AuthRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -24,6 +26,7 @@ import java.util.List;
 
 // A fragment representing a list of Items
 public class SensorFragment extends Fragment implements MySensorRecyclerViewAdapter.RecyclerViewDelegate {
+    private View view;
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     List<Sensor> sensors;
@@ -52,13 +55,13 @@ public class SensorFragment extends Fragment implements MySensorRecyclerViewAdap
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sensor_list, container, false);
+        view = inflater.inflate(R.layout.fragment_sensor_list, container, false);
         ServiceClient client = ServiceClient.sharedServiceClient();
         sensors = new ArrayList<>();
         MySensorRecyclerViewAdapter adapter = new MySensorRecyclerViewAdapter(sensors);
         adapter.delegate = this;
 
-        AuthRequest request = new AuthRequest(Request.Method.GET, "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/sensors", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new AuthRequest(Request.Method.GET, "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/sensors", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Type sensorList = new TypeToken<ArrayList<Sensor>>() {}.getType();
@@ -100,8 +103,7 @@ public class SensorFragment extends Fragment implements MySensorRecyclerViewAdap
     public void didSelect(int index) {
         Sensor s = sensors.get(index);
         Bundle sensorBundle = new Bundle();
-        sensorBundle.putString("readingType", s.reading_type);
-        //Navigation.findNavController(view).navigate(R.id.action_sensorFragment_to_sensorReadingsFragment, sensorBundle);
-        //Can send this in a bundle
+        sensorBundle.putInt("readingTypeNum", s.reading_id);
+        Navigation.findNavController(view).navigate(R.id.action_sensorFragment_to_sensorReadingsFragment, sensorBundle);
     }
 }
