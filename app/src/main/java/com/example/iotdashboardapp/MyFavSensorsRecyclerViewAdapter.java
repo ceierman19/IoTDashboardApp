@@ -30,8 +30,7 @@ public class MyFavSensorsRecyclerViewAdapter extends RecyclerView.Adapter<MyFavS
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        //holder.mIdView.setText(String.format("Sensor ID: %d", mValues.get(position).favorite_id));
-        holder.mContentView.setText(String.format("Reading Type: %s", mValues.get(position).reading_type));
+        holder.mContentView.setText(String.format("Sensor: %s", mValues.get(position).reading_type));
     }
 
     @Override

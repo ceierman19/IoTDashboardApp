@@ -61,23 +61,29 @@ public class SensorReadingsFragment extends Fragment {
         MySensorReadingsRecyclerViewAdapter adapter = new MySensorReadingsRecyclerViewAdapter(sensorReadings);
 
         Bundle sensorBundle = getArguments();
-        int id = -1;
-//        String readingType = sensorBundle.getString("readingType");
-//        int id = -1;
-//        if (readingType.equals("temp")) {
-//            id = 0;
-//        }
-//        else if (readingType.equals("humd")) {
-//            id = 1;
-//        }
-//        else if (readingType.equals("soiltemp")) {
-//            id = 2;
-//        }
-//        else {
-//            id = 3;
-//        }
-        id = sensorBundle.getInt("readingTypeNum");
-        id -= 1;
+        String source = sensorBundle.getString("source");
+        int id;
+
+        if (source.equals("fav")) {
+            String readingType = sensorBundle.getString("readingType");
+            if (readingType.equals("temp")) {
+                id = 0;
+            }
+            else if (readingType.equals("humd")) {
+                id = 1;
+            }
+            else if (readingType.equals("soiltemp")) {
+                id = 2;
+            }
+            else {
+                id = 3;
+            }
+        }
+        else {
+            id = sensorBundle.getInt("readingTypeNum");
+            id -= 1;
+        }
+
         String url = "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/readings/" + id;
         JsonObjectRequest request = new AuthRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override

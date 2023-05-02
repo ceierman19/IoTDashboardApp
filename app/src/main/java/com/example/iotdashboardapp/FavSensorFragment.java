@@ -66,7 +66,7 @@ public class FavSensorFragment extends Fragment implements MyFavSensorsRecyclerV
         JsonObjectRequest request = new AuthRequest(Request.Method.GET, "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/favSensors", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Type favSensorList = new TypeToken<ArrayList<Sensor>>() {
+                Type favSensorList = new TypeToken<ArrayList<FavSensor>>() {
                 }.getType();
                 Gson gson = new Gson();
                 try {
@@ -105,8 +105,9 @@ public class FavSensorFragment extends Fragment implements MyFavSensorsRecyclerV
     @Override
     public void didSelect(int index) {
         FavSensor s = favSensors.get(index);
-//        Bundle sensorBundle = new Bundle();
-//        sensorBundle.putString("readingType", s.reading_type);
-//        Navigation.findNavController(view).navigate(R.id.action_sensorFragment_to_sensorReadingsFragment, sensorBundle);
+        Bundle sensorBundle = new Bundle();
+        sensorBundle.putString("readingType", s.reading_type);
+        sensorBundle.putString("source", "fav");
+        Navigation.findNavController(view).navigate(R.id.action_favSensorFragment_to_sensorReadingsFragment, sensorBundle);
     }
 }
