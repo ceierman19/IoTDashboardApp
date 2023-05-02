@@ -1,6 +1,6 @@
 package com.example.iotdashboardapp;
 
 public class Sensor {
-    public int sensor_id;
-    public String sensor_name;
+    public int reading_id;
+    public String reading_type;
 }

@@ -2,38 +2,46 @@ package com.example.iotdashboardapp;
 
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.iotdashboardapp.model.AuthRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-// A fragment representing a list of Items
-public class SensorFragment extends Fragment implements MySensorRecyclerViewAdapter.RecyclerViewDelegate {
+/**
+ * A fragment representing a list of Items.
+ */
+public class SensorReadingsFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
-    List<Sensor> sensors;
+    List<SensorReadings> sensorReadings;
 
     // Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon screen orientation changes)
-    public SensorFragment() {
+    public SensorReadingsFragment() {
     }
 
-    public static SensorFragment newInstance(int columnCount) {
-        SensorFragment fragment = new SensorFragment();
+    public static SensorReadingsFragment newInstance(int columnCount) {
+        SensorReadingsFragment fragment = new SensorReadingsFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -52,21 +60,21 @@ public class SensorFragment extends Fragment implements MySensorRecyclerViewAdap
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sensor_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_sensor_readings_list, container, false);
         ServiceClient client = ServiceClient.sharedServiceClient();
-        sensors = new ArrayList<>();
-        MySensorRecyclerViewAdapter adapter = new MySensorRecyclerViewAdapter(sensors);
-        adapter.delegate = this;
+        sensorReadings = new ArrayList<>();
+        MySensorReadingsRecyclerViewAdapter adapter = new MySensorReadingsRecyclerViewAdapter(sensorReadings);
 
-        AuthRequest request = new AuthRequest(Request.Method.GET, "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/sensors", null, new Response.Listener<JSONObject>() {
+        //TODO Change URL to sensorReadings one
+        JsonObjectRequest request = new AuthRequest(Request.Method.GET, "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/sensors", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Type sensorList = new TypeToken<ArrayList<Sensor>>() {}.getType();
+                Type sensorReadingsList = new TypeToken<ArrayList<SensorReadings>>() {}.getType();
                 Gson gson = new Gson();
                 try {
-                    List<Sensor> updatedSensors = gson.fromJson(response.get("data").toString(), sensorList);
-                    sensors.clear();
-                    sensors.addAll(updatedSensors);
+                    List<SensorReadings> updatedSensorReadings = gson.fromJson(response.get("data").toString(), sensorReadingsList);
+                    sensorReadings.clear();
+                    sensorReadings.addAll(updatedSensorReadings);
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -94,14 +102,5 @@ public class SensorFragment extends Fragment implements MySensorRecyclerViewAdap
         }
 
         return view;
-    }
-
-    @Override
-    public void didSelect(int index) {
-        Sensor s = sensors.get(index);
-        Bundle sensorBundle = new Bundle();
-        sensorBundle.putString("readingType", s.reading_type);
-        //Navigation.findNavController(view).navigate(R.id.action_sensorFragment_to_sensorReadingsFragment, sensorBundle);
-        //Can send this in a bundle
     }
 }

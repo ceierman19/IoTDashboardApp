@@ -3,11 +3,28 @@ package com.example.iotdashboardapp;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.iotdashboardapp.model.AuthRequest;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,30 +68,98 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        ServiceClient client = ServiceClient.sharedServiceClient();
+
+        EditText usernameField = view.findViewById(R.id.editTextUsername);
+        EditText passwordField = view.findViewById(R.id.editTextPassword);
+
+        view.findViewById(R.id.buttonRegister).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View registerButton) {
+                String username = usernameField.getText().toString();
+                String password = passwordField.getText().toString();
+
+                if (username.isEmpty() || password.isEmpty()) {
+                    Toast toast = Toast.makeText(getActivity(),"Please enter a valid username and password.", Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+
+                JSONObject json = new JSONObject();
+                try {
+                    json.put("username", username);
+                    json.put("password", password);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/users", json, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getInt("status") == 0) {
+                                Toast toast = Toast.makeText(getActivity(),"Hooray! Successfully registered!.", Toast.LENGTH_LONG);
+                                toast.show();
+                            }
+                            else {
+                                Toast toast = Toast.makeText(getActivity(),"Try again.", Toast.LENGTH_LONG);
+                                toast.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Volley Error", error.toString());
+                        //TODO: handle error
+                    }
+                });
+
+                client.addRequest(request);
+            }
+        });
 
         view.findViewById(R.id.buttonLogin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View loginButton) {
-                EditText usernameField = view.findViewById(R.id.editTextUsername);
-                EditText passwordField = view.findViewById(R.id.editTextPassword);
                 String username = usernameField.getText().toString();
                 String password = passwordField.getText().toString();
 
-                if (!username.isEmpty() && !password.isEmpty()) {
-                    // Should we hardcode like this? //if (username.equals("admin") && password.equals("changeme"))
-                    // Or should we just check if the fields are empty?
-
-                    // Not sure if this userInfo bundle is needed
-                    Bundle userInfoBundle = new Bundle();
-                    userInfoBundle.putString("username", username);
-                    userInfoBundle.putString("password", password);
-                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment, userInfoBundle);
-                    //Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
-                }
-                else {
+                if (username.isEmpty() || password.isEmpty()) {
                     Toast toast = Toast.makeText(getActivity(),"Please enter a valid username and password.", Toast.LENGTH_LONG);
                     toast.show();
+                    return;
                 }
+
+                AuthRequest.username = username;
+                AuthRequest.password = password;
+
+                JsonObjectRequest request = new AuthRequest(Request.Method.GET, "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/sensors", null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getInt("status") == 0) {
+                                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
+                            }
+                            else {
+                                Toast toast = Toast.makeText(getActivity(),"Try again.", Toast.LENGTH_LONG);
+                                toast.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Volley Error", error.toString());
+                        //TODO: handle error
+                    }
+                });
+
+                client.addRequest(request);
             }
         });
 

@@ -11,11 +11,11 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_favSensorsFragment"
-            app:destination="@id/favSensorsFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_sensorFragment"
             app:destination="@id/sensorFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_favSensorFragment"
+            app:destination="@id/favSensorFragment" />
     </fragment>
 
     <fragment
@@ -29,14 +29,26 @@
     </fragment>
 
     <fragment
-        android:id="@+id/favSensorsFragment"
-        android:name="com.example.iotdashboardapp.FavSensorsFragment"
-        android:label="fragment_fav_sensors"
-        tools:layout="@layout/fragment_fav_sensors" />
-
-    <fragment
         android:id="@+id/sensorFragment"
         android:name="com.example.iotdashboardapp.SensorFragment"
         android:label="fragment_item_list"
-        tools:layout="@layout/fragment_item_list" />
+        tools:layout="@layout/fragment_sensor_list" >
+        <action
+            android:id="@+id/action_sensorFragment_to_sensorReadingsFragment"
+            app:destination="@id/sensorReadingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sensorReadingsFragment"
+        android:name="com.example.iotdashboardapp.SensorReadingsFragment"
+        android:label="fragment_sensor_readings_list"
+        tools:layout="@layout/fragment_sensor_readings_list" />
+    <fragment
+        android:id="@+id/favSensorFragment"
+        android:name="com.example.iotdashboardapp.FavSensorFragment"
+        android:label="fragment_fav_sensor_list"
+        tools:layout="@layout/fragment_fav_sensor_list" >
+        <action
+            android:id="@+id/action_favSensorFragment_to_sensorReadingsFragment"
+            app:destination="@id/sensorReadingsFragment" />
+    </fragment>
 </navigation>
