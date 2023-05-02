@@ -104,6 +104,7 @@ public class SensorFragment extends Fragment implements MySensorRecyclerViewAdap
         Sensor s = sensors.get(index);
         Bundle sensorBundle = new Bundle();
         sensorBundle.putInt("readingTypeNum", s.reading_id);
+        sensorBundle.putString("readingType", s.reading_type);
         sensorBundle.putString("source", "all");
         Navigation.findNavController(view).navigate(R.id.action_sensorFragment_to_sensorReadingsFragment, sensorBundle);
     }

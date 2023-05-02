@@ -1,8 +1,11 @@
 package com.example.iotdashboardapp;
 
+import static android.view.View.GONE;
+
 import android.content.Context;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -80,6 +85,9 @@ public class SensorReadingsFragment extends Fragment {
             }
         }
         else {
+            Button unfavButton = view.findViewById(R.id.buttonUnfav);
+            unfavButton.setVisibility(GONE);
+
             id = sensorBundle.getInt("readingTypeNum");
             id -= 1;
         }
@@ -119,6 +127,84 @@ public class SensorReadingsFragment extends Fragment {
             }
             recyclerView.setAdapter(adapter);
         }
+
+        String readingType = sensorBundle.getString("readingType");
+        JSONObject json = new JSONObject();
+        try {
+            json.put("username", AuthRequest.username);
+            json.put("reading_type", readingType);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        view.findViewById(R.id.buttonFav).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View favButton) {
+                JsonObjectRequest request2 = new AuthRequest(Request.Method.POST, "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/favSensors", json, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getInt("status") == 0) {
+                                Toast toast = Toast.makeText(getActivity(), "Hooray! Favorited.", Toast.LENGTH_LONG);
+                                toast.show();
+                            } else {
+                                Toast toast = Toast.makeText(getActivity(), "Try again.", Toast.LENGTH_LONG);
+                                toast.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Volley Error", error.toString());
+                    }
+                });
+
+                client.addRequest(request2);
+            }
+        });
+
+        view.findViewById(R.id.buttonUnfav).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View unfavButton) {
+                int favoriteId = sensorBundle.getInt("favoriteId");
+
+                JSONObject json2 = new JSONObject();
+                try {
+                    json2.put("username", AuthRequest.username);
+                    json2.put("favorite_id", favoriteId);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String url = "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/favSensors/" + favoriteId;
+                JsonObjectRequest request3 = new AuthRequest(Request.Method.DELETE, url, json2, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getInt("status") == 0) {
+                                Toast toast = Toast.makeText(getActivity(), "Boo! Unfavorited.", Toast.LENGTH_LONG);
+                                toast.show();
+                            } else {
+                                Toast toast = Toast.makeText(getActivity(), "Try again.", Toast.LENGTH_LONG);
+                                toast.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Volley Error", error.toString());
+                    }
+                });
+
+                client.addRequest(request3);
+            }
+        });
 
         return view;
     }

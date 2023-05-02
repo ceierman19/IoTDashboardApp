@@ -155,7 +155,6 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("Volley Error", error.toString());
-                        //TODO: handle error
                     }
                 });
 
