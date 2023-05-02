@@ -2,17 +2,14 @@ package com.example.iotdashboardapp;
 
 import android.content.Context;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -20,10 +17,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.iotdashboardapp.model.AuthRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,24 +61,24 @@ public class SensorReadingsFragment extends Fragment {
         MySensorReadingsRecyclerViewAdapter adapter = new MySensorReadingsRecyclerViewAdapter(sensorReadings);
 
         Bundle sensorBundle = getArguments();
-        String readingType = sensorBundle.getString("readingType");
         int id = -1;
-        if (readingType.equals("temp")) {
-            id = 0;
-        }
-        else if (readingType.equals("humd")) {
-            id = 1;
-        }
-        else if (readingType.equals("soiltemp")) {
-            id = 2;
-        }
-        else {
-            id = 3;
-        }
+//        String readingType = sensorBundle.getString("readingType");
+//        int id = -1;
+//        if (readingType.equals("temp")) {
+//            id = 0;
+//        }
+//        else if (readingType.equals("humd")) {
+//            id = 1;
+//        }
+//        else if (readingType.equals("soiltemp")) {
+//            id = 2;
+//        }
+//        else {
+//            id = 3;
+//        }
         id = sensorBundle.getInt("readingTypeNum");
         id -= 1;
-        //String url = "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/sensorReadings/" + id;
-        String url = "https://mopsdev.bw.edu/~jgersey20/330/www/rest.php/sensorReadings/" + id;
+        String url = "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/readings/" + id;
         JsonObjectRequest request = new AuthRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
