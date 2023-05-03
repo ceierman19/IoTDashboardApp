@@ -1,8 +1,9 @@
 package com.example.iotdashboardapp;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.example.iotdashboardapp.databinding.FragmentSensorReadingsBinding;
@@ -23,6 +24,7 @@ public class MySensorReadingsRecyclerViewAdapter extends RecyclerView.Adapter<My
         return new ViewHolder(FragmentSensorReadingsBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);

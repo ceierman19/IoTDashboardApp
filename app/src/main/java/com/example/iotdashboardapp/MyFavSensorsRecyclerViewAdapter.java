@@ -1,6 +1,8 @@
 package com.example.iotdashboardapp;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,7 @@ public class MyFavSensorsRecyclerViewAdapter extends RecyclerView.Adapter<MyFavS
         return new ViewHolder(FragmentFavSensorBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);

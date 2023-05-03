@@ -5,7 +5,6 @@ import static android.view.View.GONE;
 import android.content.Context;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +31,7 @@ import java.util.List;
  * A fragment representing a list of Items.
  */
 public class SensorReadingsFragment extends Fragment {
+    private View view;
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     List<SensorReadings> sensorReadings;
@@ -60,7 +60,7 @@ public class SensorReadingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sensor_readings_list, container, false);
+        view = inflater.inflate(R.layout.fragment_sensor_readings_list, container, false);
         ServiceClient client = ServiceClient.sharedServiceClient();
         sensorReadings = new ArrayList<>();
         MySensorReadingsRecyclerViewAdapter adapter = new MySensorReadingsRecyclerViewAdapter(sensorReadings);
@@ -70,6 +70,9 @@ public class SensorReadingsFragment extends Fragment {
         int id;
 
         if (source.equals("fav")) {
+            Button favButton = view.findViewById(R.id.buttonFav);
+            favButton.setVisibility(GONE);
+
             String readingType = sensorBundle.getString("readingType");
             if (readingType.equals("temp")) {
                 id = 0;
@@ -128,19 +131,20 @@ public class SensorReadingsFragment extends Fragment {
             recyclerView.setAdapter(adapter);
         }
 
-        String readingType = sensorBundle.getString("readingType");
-        JSONObject json = new JSONObject();
-        try {
-            json.put("username", AuthRequest.username);
-            json.put("reading_type", readingType);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
         view.findViewById(R.id.buttonFav).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View favButton) {
-                JsonObjectRequest request2 = new AuthRequest(Request.Method.POST, "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/favSensors", json, new Response.Listener<JSONObject>() {
+                String readingType = sensorBundle.getString("readingType");
+                JSONObject json = new JSONObject();
+                try {
+                    json.put("username", AuthRequest.username);
+                    json.put("reading_type", readingType);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String url = "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/favSensors";
+                JsonObjectRequest request = new AuthRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
@@ -162,7 +166,7 @@ public class SensorReadingsFragment extends Fragment {
                     }
                 });
 
-                client.addRequest(request2);
+                client.addRequest(request);
             }
         });
 
@@ -170,17 +174,15 @@ public class SensorReadingsFragment extends Fragment {
             @Override
             public void onClick(View unfavButton) {
                 int favoriteId = sensorBundle.getInt("favoriteId");
-
-                JSONObject json2 = new JSONObject();
+                JSONObject jsonObject = new JSONObject();
                 try {
-                    json2.put("username", AuthRequest.username);
-                    json2.put("favorite_id", favoriteId);
+                    jsonObject.put("favorite_id", favoriteId);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 String url = "https://mopsdev.bw.edu/~ceierman19/csc330/architecture_template/www/rest.php/favSensors/" + favoriteId;
-                JsonObjectRequest request3 = new AuthRequest(Request.Method.DELETE, url, json2, new Response.Listener<JSONObject>() {
+                JsonObjectRequest request = new AuthRequest(Request.Method.DELETE, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
@@ -202,7 +204,7 @@ public class SensorReadingsFragment extends Fragment {
                     }
                 });
 
-                client.addRequest(request3);
+                client.addRequest(request);
             }
         });
 

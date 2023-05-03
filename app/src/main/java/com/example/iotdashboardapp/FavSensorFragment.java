@@ -27,7 +27,7 @@ import java.util.List;
 /**
 * A fragment representing a list of Items.
 */
-public class FavSensorFragment extends Fragment implements MyFavSensorsRecyclerViewAdapter.RecyclerViewDelegate{
+public class FavSensorFragment extends Fragment implements MyFavSensorsRecyclerViewAdapter.RecyclerViewDelegate {
     private View view;
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
@@ -68,8 +68,7 @@ public class FavSensorFragment extends Fragment implements MyFavSensorsRecyclerV
         JsonObjectRequest request = new AuthRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Type favSensorList = new TypeToken<ArrayList<FavSensor>>() {
-                }.getType();
+                Type favSensorList = new TypeToken<ArrayList<FavSensor>>() {}.getType();
                 Gson gson = new Gson();
                 try {
                     List<FavSensor> updatedFavSensors = gson.fromJson(response.get("data").toString(), favSensorList);
@@ -108,9 +107,9 @@ public class FavSensorFragment extends Fragment implements MyFavSensorsRecyclerV
     public void didSelect(int index) {
         FavSensor s = favSensors.get(index);
         Bundle sensorBundle = new Bundle();
+        sensorBundle.putInt("favoriteId", s.favorite_id);
         sensorBundle.putString("readingType", s.reading_type);
         sensorBundle.putString("source", "fav");
-        sensorBundle.putInt("favoriteId", s.favorite_id);
         Navigation.findNavController(view).navigate(R.id.action_favSensorFragment_to_sensorReadingsFragment, sensorBundle);
     }
 }
