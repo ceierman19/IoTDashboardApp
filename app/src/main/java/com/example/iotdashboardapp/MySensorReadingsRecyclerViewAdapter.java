@@ -28,9 +28,8 @@ public class MySensorReadingsRecyclerViewAdapter extends RecyclerView.Adapter<My
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(String.format("Reading Type: %s", mValues.get(position).reading_type));
-        holder.mContentView.setText(String.format("Reading Value: %d", mValues.get(position).reading_val));
-        holder.mContentView.setText(String.format("Reading Time: %s", mValues.get(position).reading_time));
+        holder.mIdView.setText(String.format("Type: %s", mValues.get(position).reading_type));
+        holder.mContentView.setText(String.format("Value: %d \n Reading Time: %s", mValues.get(position).reading_val, mValues.get(position).reading_time));
     }
 
     @Override
